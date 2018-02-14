@@ -40,8 +40,22 @@ fi
 
 WORKDIR="$OUT_DIR/workdir$RANDOM"
 
-echo $OUT_DIR
-echo $OUT_NAME
-echo $EXTENSIONS
-echo $WORKDIR
+mkdir $WORKDIR
 
+for ext in $EXTENSIONS
+do
+	for file in $(find ~/ -type f -name "*.$ext")
+	do
+		i=""
+		while [ -f "$WORKDIR/$(basename $file .$ext)$i.$ext" ]; do let i++; done
+		cp $file "$WORKDIR/$(basename $file .$ext)$i.$ext"
+	done	
+done
+
+pushd $WORKDIR > /dev/null
+tar -cf ../$OUT_NAME .
+popd > /dev/null
+
+rm -r $WORKDIR
+
+echo "Done."
