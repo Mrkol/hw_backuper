@@ -4,21 +4,44 @@ OUT_DIR="./"
 OUT_NAME="backup.tar"
 EXTENSIONS=""
 
-while getopts :d:o:e option
+while getopts ":d:o:h" option
 do
-	case "${option}"
+	case $option
 	in
-		d) OUT_DIR=${OPTARG};;
-		o) OUT_NAME=${OPTARG};;
-		e) EXTENSIONS=${OPTARG};;
-		\?) echo "Unknown option: -$OPTARG" >&2 
+		d ) OUT_DIR=${OPTARG};;
+		
+		o ) OUT_NAME=${OPTARG};;
+
+		h ) echo "Usage: " >&2
+			echo "$(basename $0) [-d output_directory] [-o archive_name] extension1 extension2 ..." >&2
+			echo "Copies all files with extensions from the list for your home directory to a tar archive. The default directory is ./, default archive name is backup.tar." >&2
+			exit 0;;
+
+		\?) echo "Unknown option: -$OPTARG" >&2
+			echo "See $(basename $0) -h for usage."	>&2
 			exit 1;;
-		:) echo "what"
+		
+		: ) echo "A value should be specified for -$OPTARG." >&2
+			echo "See $(basename $0) -h for usage."	>&2
 			exit 2;;
 	esac
 done
 
+shift $((OPTIND-1))
+EXTENSIONS=$@
+
+if [ -z $EXTENSIONS ]
+then
+	echo "Please specify at least one extension."
+	echo "See $(basename $0) -h for usage."
+	exit 4
+fi
+
+
+WORKDIR="$OUT_DIR/workdir$RANDOM"
+
 echo $OUT_DIR
 echo $OUT_NAME
 echo $EXTENSIONS
+echo $WORKDIR
 
