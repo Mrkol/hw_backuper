@@ -30,7 +30,7 @@ done
 shift $((OPTIND-1))
 EXTENSIONS=$@
 
-if [ -z $EXTENSIONS ]
+if [ -z "$EXTENSIONS" ]
 then
 	echo "Please specify at least one extension."
 	echo "See $(basename $0) -h for usage."
@@ -40,7 +40,7 @@ fi
 
 WORKDIR="$OUT_DIR/workdir$RANDOM"
 
-mkdir $WORKDIR
+mkdir "$WORKDIR"
 
 for ext in $EXTENSIONS
 do
@@ -48,14 +48,14 @@ do
 	do
 		i=""
 		while [ -f "$WORKDIR/$(basename $file .$ext)$i.$ext" ]; do let i++; done
-		cp $file "$WORKDIR/$(basename $file .$ext)$i.$ext"
-	done	
+		cp "$file" "$WORKDIR/$(basename $file .$ext)$i.$ext"
+	done
 done
 
 pushd $WORKDIR > /dev/null
-tar -cf ../$OUT_NAME .
+tar -cf "../$OUT_NAME" .
 popd > /dev/null
 
-rm -r $WORKDIR
+rm -r "$WORKDIR"
 
 echo "Done."
