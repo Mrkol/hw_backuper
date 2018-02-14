@@ -14,7 +14,7 @@ do
 
 		h ) echo "Usage: " >&2
 			echo "$(basename $0) [-d output_directory] [-o archive_name] extension1 extension2 ..." >&2
-			echo "Copies all files with extensions from the list for your home directory to a tar archive. The default directory is ./, default archive name is backup.tar." >&2
+			echo "Copies all files with extensions from the list from your home directory to a tar archive. The default directory is ./, default archive name is backup.tar." >&2
 			exit 0;;
 
 		\?) echo "Unknown option: -$OPTARG" >&2
@@ -56,6 +56,6 @@ pushd $WORKDIR > /dev/null
 tar -cf "../$OUT_NAME" .
 popd > /dev/null
 
-rm -r "$WORKDIR"
+#rm -r "$WORKDIR"
 
 echo "Done."
